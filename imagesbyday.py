@@ -6,8 +6,10 @@ import sys
 import shutil
 import re
 
-image_folder = os.path.join(os.path.dirname(__file__), 'tests', 'source')
-output_folder = os.path.join(os.path.dirname(__file__), 'tests', 'target')
+#image_folder = os.path.join(os.path.dirname(__file__), 'tests', 'source')
+image_folder = '/Users/christian/Pictures/HPCPAW 2019'
+#output_folder = os.path.join(os.path.dirname(__file__), 'tests', 'target')
+output_folder = '/Users/christian/Pictures/HPCPAW 2019-Dia'
 
 filename_regex = r"(?P<filename>.*)\.(?P<extension>JPG|jpg|jpeg|PNG|png|tiff|tif|TIF|BMP|bmp)"
 
@@ -45,7 +47,10 @@ for subfolder in os.listdir(image_folder):
             with open(os.path.join(image_folder, subfolder, image), 'rb') as file:
                 image_obj = Image(file)
             if image_obj.has_exif:
-                image_time = datetime.strptime(image_obj.datetime, "%Y:%m:%d %H:%M:%S")
+                try:
+                    image_time = datetime.strptime(image_obj.datetime, "%Y:%m:%d %H:%M:%S")
+                except:
+                    print("NO DATETIME IN " +  os.path.join(image_folder, subfolder, image))
             else:
                 print("The file " + os.path.join(image_folder, subfolder, image) + "has no exif data.")
                 image_time = os.path.getmtime(os.path.join(image_folder, subfolder, image))
